@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Arr;
+use App\Models\Post;
 
 Route::get('/', function () {
     return view('home',[
@@ -19,48 +20,12 @@ Route::get('/about', function () {
     ]);
 });
 Route::get('/posts', function () {
-    $posts = [
-        [
-        'id' => 1,
-        'title' => 'Judul Artikel 1',
-        'slug' => 'judul-artiker-1',
-        'author' => 'Aldira Givari',
-        'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae. '
-        ],
-        [
-        'id' => 2,
-        'title' => 'Judul Artikel 2',
-        'slug' => 'judul-artiker-2',
-        'author' => 'Aldira Givari',
-        'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae. '
-        ]
-    ];
+    $posts = Post::all();
     return view('posts',['title' => 'Blog','posts' => $posts]);
 });
 
 Route::get('/posts/{slug}', function ($slug) {
-   $posts = [
-        [
-        'id' => 1,
-        'title' => 'Judul Artikel 1',
-        'slug' => 'judul-artiker-1',
-        'author' => 'Aldira Givari',
-        'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae. '
-        ],
-        [
-        'id' => 2,
-        'title' => 'Judul Artikel 2',
-        'slug' => 'judul-artiker-2',
-        'author' => 'Aldira Givari',
-        'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae. '
-        ]
-    ];
-    $post = Arr::first($posts, function($post) use ($slug) {
-        return $post['slug'] == $slug;
-    }); 
-    if (!$post) {
-        abort(404);
-    }
+    $post = Post:: find($slug);
     return view('post', [
         'title' => 'Single Post',
         'post' => $post
