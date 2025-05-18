@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Post extends Model
 {
     use HasFactory;
+    protected $with = ['category', 'author'];
     protected $guarded = ['id'];
 
     public function author(): BelongsTo
