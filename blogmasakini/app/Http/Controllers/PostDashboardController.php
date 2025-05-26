@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostDashboardController extends Controller
@@ -11,7 +12,7 @@ class PostDashboardController extends Controller
      */
     public function index()
     {
-        
+        return view('dashboard',['posts' => Post::latest()->get()]);
     }
 
     /**
