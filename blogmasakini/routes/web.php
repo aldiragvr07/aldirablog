@@ -37,6 +37,8 @@ Route::get('/contact', function () {
 });
 
 Route::get('/dashboard', [PostDashboardController::class, 'index'])-> middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard/create', [PostDashboardController::class, 'create'])-> middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard/{post:slug}', [PostDashboardController::class, 'show'])-> middleware(['auth','verified']);
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
