@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class PostDashboardController extends Controller
 {
@@ -34,6 +35,19 @@ class PostDashboardController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|min:5|max:255',
+            'category_id' => 'required',
+            'body' => 'required'
+        ]);
+        // Validator::make($request->all(),[
+        //     'title' => 'required'|'min:5'|'max:255',
+        //     'category_id' => 'required',
+        //     'body' => 'required'
+        // ],[
+        //     'required' => 'Field :attribute harus diisi',
+        // ])->validate();
+
         Post::create([
             'title' => $request->title,
             'author_id' => Auth::user()->id,
@@ -42,7 +56,7 @@ class PostDashboardController extends Controller
             'body' => $request->body
         ]);
 
-        return redirect('/dashboard');
+        return redirect('/dashboard')->with(['success'=> 'Your Post has been added!']);
     }
 
     /**
