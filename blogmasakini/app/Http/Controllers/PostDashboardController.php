@@ -36,7 +36,7 @@ class PostDashboardController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|min:5|max:255',
+            'title' => 'required|min:5|max:255|unique:posts',
             'category_id' => 'required',
             'body' => 'required'
         ]);
@@ -70,17 +70,32 @@ class PostDashboardController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
-        //
+        return view('dashboard.edit',['post' => $post]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        //Validation
+            $request->validate([
+                'title' => 'required|min:5|max:255|unique:posts,title'. $post->id,
+                'category_id' => 'required',
+                'body' => 'required'
+        ]);
+        //Update post
+            $post->update([
+                'title' => $request->title,
+                'author_id' => Auth::user()->id,
+                'category_id' => $request->category_id,
+                'slug' => Str::slug($request->title),
+                'body' => $request->body
+            ]);
+        //Redirect
+        return redirect('/dashboard')->with(['success'=> 'Your Post has been updated!']);
     }
 
     /**
