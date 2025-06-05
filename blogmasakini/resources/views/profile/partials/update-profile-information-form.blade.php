@@ -55,12 +55,14 @@
         {{-- Avatar --}}
         <div>
             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="avatar">Upload Avatar</label>
-            <input class="@error('avatar') bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 @enderror block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 
+            <input class="@error('avatar') bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 @enderror 
+            block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 
             dark:text-gray-400 focus:outline-none dark:bg-gray-700 
-            dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="avatar_help" id="avatar" type="file" accept="image/png, image/jpeg ,image/jpg"> 
-            <div class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="user_avatar_help" name="avatar">png or jpg</div>
+            dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="avatar_help" name="avatar" id="avatar" type="file" accept="image/png, image/jpeg ,image/jpg"> 
+            <div class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="user_avatar_help" >png or jpg
+            </div>
             <div>
-                <img class="w-20 h-20 rounded-full" src="{{ $user->avatar ? asset($user->avatar) : asset('img/default-avatar.png') }}" alt="{{ $user->name }}">
+                <img class="w-20 h-20 rounded-full" src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('img/default-avatar.png') }}" alt="{{ $user->name }}" id="avatar-preview">
             </div>
             @error('avatar')
                 <p class="mt-2 text-xs text-red-600 dark:text-red-500">{{ $message }}</p>
@@ -81,3 +83,18 @@
         </div>
     </form>
 </section>
+<script>
+    const input = document.getElementById('avatar');
+  const previewPhoto = () => {
+    const file = input.files;
+    if (file) {
+      const fileReader = new FileReader();
+      const preview = document.getElementById('avatar-preview');
+      fileReader.onload = function(event) {
+        preview.setAttribute('src', event.target.result);
+      }
+      fileReader.readAsDataURL(file[0]);
+    }
+  }
+  input.addEventListener("change", previewPhoto);
+</script>
