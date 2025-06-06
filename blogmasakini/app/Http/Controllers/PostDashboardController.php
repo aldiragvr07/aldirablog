@@ -38,7 +38,7 @@ class PostDashboardController extends Controller
         $request->validate([
             'title' => 'required|min:5|max:255|unique:posts',
             'category_id' => 'required',
-            'body' => 'required'
+            'body' => 'required|min:50'
         ]);
         // Validator::make($request->all(),[
         //     'title' => 'required'|'min:5'|'max:255',
